@@ -101,13 +101,13 @@ degr=64
 function getApproximationSpiral( dest::Ptr{acb_poly}, precision::Int )
     
     function getAppSpiral( degree::Int, prec::Int )::Nemo.acb_poly
-        CC = ComplexField(prec)
+        CC = AcbField(prec)
         R2, y = PolynomialRing(CC, "y")
         res = R2(1)
         for k=1:degree
             modu = fmpq(k,degree)
             argu = fmpq(4*k,degree)
-            root = modu*Nemo.exppii(CC(argu))
+            root = modu*Nemo.exp(Nemo.const_pi(CC)*onei(CC)*CC(argu))
             res = res * (y-root)
         end
         return res

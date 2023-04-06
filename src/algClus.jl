@@ -9,7 +9,7 @@
 #  (at your option) any later version.  See <http://www.gnu.org/licenses/>.
 #
 
-import Nemo: fmpz, fmpq, arb, acb, acb_poly, fmpq_poly, ArbField, AcbField, RealField, ComplexField, ball
+import Nemo: fmpz, fmpq, arb, acb, acb_poly, fmpq_poly, ArbField, AcbField, RealField, ComplexField, ball, ArbField, AcbField
              
 mutable struct algClus                      # represents an algebraic cluster \alpha
     _nbSols::Int                            # the sum of multiplicity of roots in the cluster
@@ -29,8 +29,8 @@ mutable struct algClus                      # represents an algebraic cluster \a
         z._CC = ptrCC
         
         z._isolatingBox = Ccluster.getComponentBox(objCC,z._initBox)
-        R::ArbField = RealField(z._prec)
-        C::AcbField = ComplexField(z._prec)
+        R::ArbField = ArbField(z._prec)
+        C::AcbField = AcbField(z._prec)
         bRe::arb = ball(R(Ccluster.getCenterRe(z._isolatingBox)), R(fmpq(1,2)*Ccluster.getWidth(z._isolatingBox)))
         bIm::arb = ball(R(Ccluster.getCenterIm(z._isolatingBox)), R(fmpq(1,2)*Ccluster.getWidth(z._isolatingBox)))
         z._approx = C(bRe, bIm)
@@ -46,8 +46,8 @@ mutable struct algClus                      # represents an algebraic cluster \a
         z._CC = Ccluster.copy_Ptr(a._CC)
         
         z._isolatingBox = Ccluster.box( Ccluster.getCenterRe(a._isolatingBox), Ccluster.getCenterIm(a._isolatingBox), Ccluster.getWidth(a._isolatingBox) )
-        R::ArbField = RealField(z._prec)
-        C::AcbField = ComplexField(z._prec)
+        R::ArbField = ArbField(z._prec)
+        C::AcbField = AcbField(z._prec)
         bRe::arb = ball(R(Ccluster.getCenterRe(z._isolatingBox)), R(fmpq(1,2)*Ccluster.getWidth(z._isolatingBox)))
         bIm::arb = ball(R(Ccluster.getCenterIm(z._isolatingBox)), R(fmpq(1,2)*Ccluster.getWidth(z._isolatingBox)))
         z._approx = C(bRe, bIm)
@@ -106,8 +106,8 @@ function copyIn( dest::algClus, src::algClus )::Nothing
                                        Ccluster.getWidth(src._isolatingBox) )
     dest._initBox = Ccluster.box( Ccluster.getCenterRe(src._initBox), Ccluster.getCenterIm(src._initBox), Ccluster.getWidth(src._initBox) )
     dest._CC = Ccluster.copy_Ptr(src._CC)
-    R::ArbField = RealField(src._prec)
-    C::AcbField = ComplexField(src._prec)
+    R::ArbField = ArbField(src._prec)
+    C::AcbField = AcbField(src._prec)
     bRe::arb = ball(R(Ccluster.getCenterRe(dest._isolatingBox)), R(fmpq(1,2)*Ccluster.getWidth(dest._isolatingBox)))
     bIm::arb = ball(R(Ccluster.getCenterIm(dest._isolatingBox)), R(fmpq(1,2)*Ccluster.getWidth(dest._isolatingBox)))
     dest._approx = C(bRe, bIm);
@@ -135,8 +135,8 @@ end
 
 #require: prec<=a._prec
 function getApproximation(a::algClus, prec::Int)::acb #get approximation of the center 
-#     R::ArbField = RealField(prec)
-    C::AcbField = ComplexField(prec)
+#     R::ArbField = ArbField(prec)
+    C::AcbField = AcbField(prec)
     if prec<a._prec
         return C(a._approx)
     else

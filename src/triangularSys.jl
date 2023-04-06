@@ -14,7 +14,7 @@
 
 import AbstractAlgebra: Generic
 
-import Nemo: fmpz, fmpq, acb, acb_poly, fmpq_poly, degree, ArbField, AcbField, RealField, ComplexField, 
+import Nemo: fmpz, fmpq, acb, acb_poly, fmpq_poly, degree, ArbField, AcbField, ArbField, AcbField, 
              AcbPolyRing, PolynomialRing, evaluate, coeff
 
 # export TIMEINGETPOLAT
@@ -48,7 +48,7 @@ function getDeg(pol, ind::Int)::Array{Int,1} #get the vector of degrees of pol
 end
 
 function evalUniFMPQPol(P::fmpq_poly, b::acb, prec::Int)::acb
-    CC::AcbField = ComplexField(prec)
+    CC::AcbField = AcbField(prec)
     R::AcbPolyRing, dummy::acb_poly = PolynomialRing(CC, "dummy")
     res::acb_poly = R(0)
 #     ccall((:acb_poly_set_fmpq_poly, libarb), 
@@ -63,7 +63,7 @@ function evalPolAt(P, b::Array{acb, 1}, prec::Int)::acb
         res = evalUniFMPQPol(P, b[1], prec)
     else
         btemp::acb=pop!(b)
-        CC::AcbField = ComplexField(prec)
+        CC::AcbField = AcbField(prec)
         R::AcbPolyRing, dummy::acb_poly = PolynomialRing(CC, "dummy")
         pol::acb_poly = R(0);
         for index=0:degree(P)
@@ -214,7 +214,7 @@ end
 
 function getPolAtHorner(P, b::Array{acb, 1}, prec::Int)::acb_poly
 #     tic=time()
-    CC::AcbField = ComplexField(prec)
+    CC::AcbField = AcbField(prec)
     R::AcbPolyRing, dummy::acb_poly = PolynomialRing(CC, "dummy")
     res::acb_poly = R(0)
     deg = degree(P)
@@ -234,7 +234,7 @@ end
 function getPolAt(P, b::Array{acb, 1}, prec::Int)::acb_poly
 #     print("--------------------------\n")
 #     tic=time()
-    CC::AcbField = ComplexField(prec)
+    CC::AcbField = AcbField(prec)
     R::AcbPolyRing, dummy::acb_poly = PolynomialRing(CC, "dummy")
     res::acb_poly = R(0)
     for index=0:degree(P)
